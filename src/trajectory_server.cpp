@@ -44,13 +44,15 @@ void TrajectoryServer::waitForTf()
 {
   rclcpp::Time start = rclcpp::Node::now();
 
-  RCLCPP_INFO(get_logger(), "Waiting for tf transform data between frames %s and %s to become available",
+  RCLCPP_INFO(
+    get_logger(), "Waiting for tf transform data between frames %s and %s to become available",
     p_target_frame_name_.c_str(), p_source_frame_name_.c_str());
 
   bool transform_successful = false;
 
   while (!transform_successful) {
-    transform_successful = tf_buffer_.canTransform(p_target_frame_name_, p_source_frame_name_,
+    transform_successful = tf_buffer_.canTransform(
+      p_target_frame_name_, p_source_frame_name_,
       tf2::TimePointZero, tf2::durationFromSec(1.0));
 
     if (transform_successful) {
@@ -59,10 +61,11 @@ void TrajectoryServer::waitForTf()
 
     rclcpp::Time now = rclcpp::Node::now();
 
-    if ((now-start).seconds() > 20.0) {
-      RCLCPP_WARN_ONCE(get_logger(),
+    if ((now - start).seconds() > 20.0) {
+      RCLCPP_WARN_ONCE(
+        get_logger(),
         "No transform between frams %s and %s available after %f seconds of waiting. This warning only prints once.",
-        p_target_frame_name_.c_str(), p_source_frame_name_.c_str(), (now-start).seconds());
+        p_target_frame_name_.c_str(), p_source_frame_name_.c_str(), (now - start).seconds());
     }
 
     if (!rclcpp::ok()) {
@@ -73,7 +76,8 @@ void TrajectoryServer::waitForTf()
   }
 
   rclcpp::Time end = rclcpp::Node::now();
-  RCLCPP_INFO(get_logger(), "Finished waiting for tf, waited %f seconds", (end-start).seconds());
+  RCLCPP_INFO(
+    get_logger(), "Finished waiting for tf, waited %f seconds", (end - start).seconds());
 }
 
 void TrajectoryServer::addCurrentTfPoseToTrajectory()
@@ -98,9 +102,10 @@ void TrajectoryServer::trajectoryUpdateTimerCallback()
 {
   try {
     addCurrentTfPoseToTrajectory();
-  } catch (const tf2::TransformException& e) {
-    RCLCPP_WARN(get_logger(), "Trajectory Server: Transform from %s to %s failed: %s \n",
-    p_target_frame_name_.c_str(), pose_source_.header.frame_id.c_str(), e.what());
+  } catch (const tf2::TransformException & e) {
+    RCLCPP_WARN(
+      get_logger(), "Trajectory Server: Transform from %s to %s failed: %s \n",
+      p_target_frame_name_.c_str(), pose_source_.header.frame_id.c_str(), e.what());
   }
 }
 
