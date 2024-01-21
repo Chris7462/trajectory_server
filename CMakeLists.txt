@@ -17,18 +17,16 @@ add_executable(trajectory_server_node
   src/trajectory_server.cpp
   src/trajectory_server_node.cpp)
 
-target_include_directories(trajectory_server_node
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>)
+target_include_directories(trajectory_server_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
 
-ament_target_dependencies(trajectory_server_node
-  PUBLIC
-    rclcpp
-    tf2_ros
-    nav_msgs
-    geometry_msgs
-    tf2_geometry_msgs)
+ament_target_dependencies(trajectory_server_node PUBLIC
+  rclcpp
+  tf2_ros
+  nav_msgs
+  geometry_msgs
+  tf2_geometry_msgs)
 
 target_compile_features(trajectory_server_node PUBLIC c_std_99 cxx_std_17) # Require C99 and C++17
 
